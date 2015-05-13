@@ -16,8 +16,6 @@
  */
 package com.staalcomputingsolutions.testpalindrome;
 
-import java.util.Scanner;
-
 /**
  *
  * @author Charles Joseph Staal
@@ -27,24 +25,85 @@ public class TestPalindrome {
     /**
      * @param args the command line arguments
      */
+    private final static String toBeTested = "race car";
+    private final static int errorsAllowed = 0;
+    private final static int iterations = 1000;
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Please enter string to be tested:");
-        String theString = sc.nextLine();
-        System.out.println("Please enter error rate:");
-        int errorRate = sc.nextInt();
-        System.out.println(isItAPalidrone(theString, errorRate));
+        testv1(toBeTested, errorsAllowed);
+        testv2(toBeTested, errorsAllowed);
+        testv3(toBeTested.toLowerCase().toCharArray(), errorsAllowed);
 
     }
 
-    public static boolean isItAPalidrone(String theString, int errorRate) {
-        theString = theString.replaceAll(" ", "");
+    private static void testv1(String theString, int errorRate) {
+        for (int counter = 0; counter < iterations; counter++) {
+            isItAPalindromev1(theString, errorRate);
+        }
+    }
+
+    private static void testv2(String theString, int errorRate) {
+        for (int counter = 0; counter < iterations; counter++) {
+            isItAPalindromev2(theString, errorRate);
+        }
+    }
+
+    private static void testv3(char[] theString, int errorRate) {
+        for (int counter = 0; counter < iterations; counter++) {
+            isItAPalindromev3(theString, errorRate);
+        }
+    }
+
+    /**
+     * .0529ms runtime.
+     *
+     * @param theString
+     * @param errorRate
+     * @return
+     */
+    public static boolean isItAPalindromev1(String theString, int errorRate) {
+        theString = theString.replaceAll(" ", "").toLowerCase();
         String theReversedString = new StringBuilder(theString).reverse().toString();
-        int error = 0;
         for (int index = 0; index < theString.length(); index++) {
             if (!Character.toString(theString.charAt(index)).equalsIgnoreCase(Character.toString(theReversedString.charAt(index)))) {
-                error++;
-                if (error > errorRate) {
+                if (--errorRate < 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * .0219ms runtime.
+     *
+     * @param firstString
+     * @param errorRate
+     * @return
+     */
+    public static boolean isItAPalindromev2(String firstString, int errorRate) {
+        char[] firstCharArray = firstString.replaceAll(" ", "").toLowerCase().toCharArray();
+        for (int index0 = 0, index1 = firstCharArray.length - 1; index0 <= firstCharArray.length / 2; index0++, index1--) {
+            if (firstCharArray[index0] != firstCharArray[index1]) {
+                if (--errorRate < 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * .00122ms runtime.
+     *
+     * @param array
+     * @param errorRate
+     * @return
+     */
+    public static boolean isItAPalindromev3(char[] array, int errorRate) {
+        for (int index0 = 0, index1 = array.length - 1; index0 <= array.length / 2; index0++, index1--) {
+            if (array[index0] != array[index1]) {
+                if (--errorRate < 0) {
                     return false;
                 }
             }
