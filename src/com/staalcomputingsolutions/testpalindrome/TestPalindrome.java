@@ -55,7 +55,7 @@ public class TestPalindrome {
     }
 
     /**
-     * .0121ms runtime.
+     * .0148ms runtime.
      *
      * @param theString
      * @param errorRate
@@ -75,7 +75,7 @@ public class TestPalindrome {
     }
 
     /**
-     * .00288ms runtime.
+     * .00395ms runtime.
      *
      * @param firstString
      * @param errorRate
@@ -94,14 +94,14 @@ public class TestPalindrome {
     }
 
     /**
-     * .00234ms runtime.
+     * .00357ms runtime.
      *
      * @param array
      * @param errorRate
      * @return
      */
     public static boolean isItAPalindromev3(char[] array, int errorRate) {
-        array = array.toString().replaceAll(" ", "").toCharArray();
+        array = String.copyValueOf(array).replaceAll(" ", "").toCharArray();
         for (int index0 = 0, index1 = array.length - 1; index0 <= array.length / 2; index0++, index1--) {
             if (array[index0] != array[index1]) {
                 if (--errorRate < 0) {
